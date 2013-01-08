@@ -1,0 +1,44 @@
+﻿<Window x:Class="ScreenToWiki.UploadInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ScreenToWiki" Height="250" Width="600" ResizeMode="NoResize" ShowInTaskbar="False"
+        Loaded="uploadInfoWindow_Loaded">
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <Button Name="buttonUpload" Margin="5" Padding="5" Click="buttonUpload_Click" IsDefault="True">Upload</Button>
+            <Button Name="buttonCancel" Margin="5" Padding="5" Click="buttonCancel_Click">Cancel</Button>
+        </StackPanel>
+        
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="MinWidth" Value="80"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <TextBlock>Input your wiki information. </TextBlock>
+            <DockPanel>
+                <Label DockPanel.Dock="Left">Uploader:</Label>
+                <ComboBox Name="comboBoxUploader" VerticalAlignment="Center" ItemsSource="{Binding UploaderTypeNameList}" SelectedValue="{Binding UploaderTypeName}"></ComboBox>
+            </DockPanel>
+
+            <DockPanel>
+                <Label DockPanel.Dock="Left">Wiki Url:</Label>
+                <TextBox Name="textBoxUrl" VerticalAlignment="Center" Text="{Binding Url}"></TextBox>
+            </DockPanel>
+
+            <DockPanel>
+                <Label DockPanel.Dock="Left">UserName:</Label>
+                <TextBox Name="textBoxUserName" VerticalAlignment="Center" Text="{Binding UserName}"></TextBox>
+            </DockPanel>
+            
+            <DockPanel>
+                <Label DockPanel.Dock="Left" >Password:</Label>
+                <StackPanel>
+                    <PasswordBox Name="passwordBoxPassword" VerticalAlignment="Center" PasswordChanged="passwordBoxPassword_PasswordChanged"></PasswordBox>
+                    <CheckBox Name="checkBoxSavePassword" IsChecked="{Binding SavePassword}">Save password (INSECURE)</CheckBox>
+                </StackPanel>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>
