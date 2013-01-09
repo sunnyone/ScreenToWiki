@@ -39,6 +39,14 @@
                     <CheckBox Name="checkBoxSavePassword" IsChecked="{Binding SavePassword}">Save password (INSECURE)</CheckBox>
                 </StackPanel>
             </DockPanel>
+            
+            <DockPanel>
+                <Label DockPanel.Dock="Left">
+                    Filename:
+                </Label>
+                <Label DockPanel.Dock="Right">(Optional)</Label>
+                <TextBox Name="textBoxFilename" VerticalAlignment="Center" Text="{Binding Filename}"></TextBox>
+            </DockPanel>
         </StackPanel>
     </DockPanel>
 </Window>

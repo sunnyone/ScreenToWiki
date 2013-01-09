@@ -75,5 +75,14 @@ namespace ScreenToWiki {
             get { return savePassword; }
             set { savePassword = value; OnPropertyChanged("SavePassword"); }
         }
+
+        private string filename;
+
+        public string Filename
+        {
+            get { return filename; }
+            set { filename = value; OnPropertyChanged("Filename"); }
+        }
+
     }
 }

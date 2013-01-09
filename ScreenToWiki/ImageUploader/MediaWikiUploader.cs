@@ -120,7 +120,15 @@ namespace ScreenToWiki.ImageUploader
                     String.Format("Failed to get edittoken (edittoken: {0})", edittoken));
             }
 
-            string filename = ScreenToWikiUtil.GetFileName(".png");
+            string filename = String.IsNullOrEmpty(config.Filename)
+                                  ? ScreenToWikiUtil.GetFileName(".png")
+                                  : config.Filename;
+            
+            if (!filename.ToLower().EndsWith(".png"))
+            {
+                filename = filename + ".png";
+            }
+
             string descriptionUrl = null;
             ScreenToWikiUtil.UseTempDir((tempDir) =>
             {
