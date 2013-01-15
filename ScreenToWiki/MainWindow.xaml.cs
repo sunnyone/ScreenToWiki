@@ -213,10 +213,26 @@ namespace ScreenToWiki
 
             var uploader = imageUploaders.Where(x => x.GetType().Name == uploadConfig.UploaderTypeName).First();
 
+            if (String.IsNullOrEmpty(uploadConfig.Filename))
+            {
+                uploadConfig.Filename = ScreenToWikiUtil.GetFileName(".png");
+            }
+
+            if (!uploadConfig.Filename.ToLower().EndsWith(".png"))
+            {
+                uploadConfig.Filename = uploadConfig.Filename + ".png";
+            }
+
             Uri uri = null;
             try
             {
-                uri = uploader.UploadImage(bitmap, uploadConfig);
+                ScreenToWikiUtil.UseTempDir((tempDir) =>
+                {
+                    string imagePath = System.IO.Path.Combine(tempDir, "temp.png");
+                    ScreenToWikiUtil.SavePngFile(bitmap, imagePath);
+
+                    uri = uploader.UploadImage(imagePath, uploadConfig);
+                });
             }
             catch (UploadFailedException ex)
             {

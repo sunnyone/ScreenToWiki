@@ -8,6 +8,6 @@ namespace ScreenToWiki.ImageUploader
 {
     public interface IImageUploader
     {
-        Uri UploadImage(BitmapSource bitmapSource, UploadConfig config);
+        Uri UploadImage(String imagePath, UploadConfig config);
     }
 }

@@ -37,7 +37,21 @@ namespace ScreenToWiki.ImageUploader
     [Export(typeof(IImageUploader))]
     public class MediaWikiUploader : IImageUploader
     {
-        public Uri UploadImage(BitmapSource bitmapSource, UploadConfig config)
+        private string getContentTypeFromExtension(string extension)
+        {
+            switch (extension.ToLower())
+            {
+                case ".png":
+                    return "image/png";
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+            }
+
+            throw new ArgumentException("Unsupported extension: " + extension);
+        }
+
+        public Uri UploadImage(String imagePath, UploadConfig config)
         {
             string url = config.Url;
             string userName = config.UserName;
@@ -120,47 +134,30 @@ namespace ScreenToWiki.ImageUploader
                     String.Format("Failed to get edittoken (edittoken: {0})", edittoken));
             }
 
-            string filename = String.IsNullOrEmpty(config.Filename)
-                                  ? ScreenToWikiUtil.GetFileName(".png")
-                                  : config.Filename;
-            
-            if (!filename.ToLower().EndsWith(".png"))
+            var fileData = new FileData();
+            fileData.ContentType = getContentTypeFromExtension(System.IO.Path.GetExtension(imagePath));
+            fileData.ContentTransferEncoding = HttpContentEncoding.Binary;
+            fileData.FieldName = "file";
+            fileData.Filename = imagePath;
+
+            var paramsUpload = new Dictionary<string, object>()
+                {
+                    {"action", "upload"},
+                    {"format", "json"},
+                    {"filename", config.Filename},
+                    {"token", edittoken}
+                };
+            var respUpload = http.Post(apiUrl, paramsUpload, new List<FileData>() {fileData});
+            var respTree = respUpload.DynamicBody;
+
+            string result = respTree.upload.result;
+
+            if (result != "Success")
             {
-                filename = filename + ".png";
+                throw new UploadFailedException(String.Format("Uploading failed (result: {0})", result));
             }
 
-            string descriptionUrl = null;
-            ScreenToWikiUtil.UseTempDir((tempDir) =>
-            {
-                string path = System.IO.Path.Combine(tempDir, filename);
-
-                ScreenToWikiUtil.SavePngFile(bitmapSource, path);
-
-                var fileData = new FileData();
-                fileData.ContentType = "image/png";
-                fileData.ContentTransferEncoding = HttpContentEncoding.Binary;
-                fileData.FieldName = "file";
-                fileData.Filename = path;
-
-                var paramsUpload = new Dictionary<string, object>()
-                    {
-                        {"action", "upload"},
-                        {"format", "json"},
-                        {"filename", filename},
-                        {"token", edittoken}
-                    };
-                var respUpload = http.Post(apiUrl, paramsUpload, new List<FileData>() {fileData});
-                var respTree = respUpload.DynamicBody;
-
-                string result = respTree.upload.result;
-
-                if (result != "Success")
-                {
-                    throw new UploadFailedException(String.Format("Uploading failed (result: {0})", result));
-                }
-
-                descriptionUrl = respTree.upload.imageinfo.descriptionurl;
-            });
+            string descriptionUrl = respTree.upload.imageinfo.descriptionurl;
 
             return new Uri(descriptionUrl);
         }
