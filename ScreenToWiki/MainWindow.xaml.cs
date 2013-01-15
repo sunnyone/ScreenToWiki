@@ -54,7 +54,7 @@ namespace ScreenToWiki
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            loadImageUploaders();
+            imageUploaders = ScreenToWikiUtil.GetImageUploaders();
 
             int width = 0, height = 0;
             foreach (var s in System.Windows.Forms.Screen.AllScreens)
@@ -137,14 +137,6 @@ namespace ScreenToWiki
             Application.Current.Shutdown();
         }
 
-        private void loadImageUploaders()
-        {
-            var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var container = new CompositionContainer(catalog);
-
-            imageUploaders = container.GetExportedValues<IImageUploader>();
-        }
-
         private void loadConfig(UploadConfig config)
         {
             config.UploaderTypeName = Settings.Default.UploaderTypeName;
@@ -156,7 +148,7 @@ namespace ScreenToWiki
             string passwordStr = Settings.Default.Password;
             if (!String.IsNullOrEmpty(passwordStr))
             {
-                config.Password = Encoding.UTF8.GetString(Convert.FromBase64String(passwordStr));
+                config.Password = ScreenToWikiUtil.DecodePasswordString(passwordStr);
             }
         }
 
@@ -170,7 +162,7 @@ namespace ScreenToWiki
             // FIXME: insecure
             if (config.SavePassword)
             {
-                Settings.Default.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(config.Password));
+                Settings.Default.Password = ScreenToWikiUtil.EncodePasswordString(config.Password);
             }
             else
             {

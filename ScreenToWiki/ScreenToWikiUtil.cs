@@ -26,6 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
+using ScreenToWiki.ImageUploader;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 
 namespace ScreenToWiki {
     public class ScreenToWikiUtil {
@@ -59,6 +62,27 @@ namespace ScreenToWiki {
             {
                 System.IO.Directory.Delete(randomDir, true);
             }
+        }
+
+        // FIXME: this is insecure!! it is just intended to be invisible for human...
+        public static string EncodePasswordString(string password)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+        }
+
+        public static string DecodePasswordString(string encodedPassword)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(encodedPassword));
+        }
+
+        public static IEnumerable<IImageUploader> GetImageUploaders()
+        {
+            var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var container = new CompositionContainer(catalog);
+
+            var imageUploaders = container.GetExportedValues<IImageUploader>();
+
+            return imageUploaders;
         }
     }
 }

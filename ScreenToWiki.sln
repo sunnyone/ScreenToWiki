@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenToWiki", "ScreenToWiki\ScreenToWiki.csproj", "{7CAC4CF1-C074-4AAA-BC60-15EC4D92E88E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenToWiki.Service", "ScreenToWiki.Service\ScreenToWiki.Service.csproj", "{BA243C25-670F-45EA-AD60-D73B6EF350DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{7CAC4CF1-C074-4AAA-BC60-15EC4D92E88E}.Debug|x86.Build.0 = Debug|x86
 		{7CAC4CF1-C074-4AAA-BC60-15EC4D92E88E}.Release|x86.ActiveCfg = Release|x86
 		{7CAC4CF1-C074-4AAA-BC60-15EC4D92E88E}.Release|x86.Build.0 = Release|x86
+		{BA243C25-670F-45EA-AD60-D73B6EF350DB}.Debug|x86.ActiveCfg = Debug|x86
+		{BA243C25-670F-45EA-AD60-D73B6EF350DB}.Debug|x86.Build.0 = Debug|x86
+		{BA243C25-670F-45EA-AD60-D73B6EF350DB}.Release|x86.ActiveCfg = Release|x86
+		{BA243C25-670F-45EA-AD60-D73B6EF350DB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
