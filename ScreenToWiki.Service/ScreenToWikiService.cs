@@ -61,7 +61,7 @@ namespace ScreenToWiki.Service
         }
 
 
-        private const int FileSizeTimeoutSec = 30;
+        private const int FileSizeTimeoutSec = 120;
 
         private FileSystemWatcher folderWatcher = new FileSystemWatcher();
         private IImageUploader uploader = null;
@@ -108,7 +108,7 @@ namespace ScreenToWiki.Service
             int elapsedTime = -1;
             long prevSize = 0;
 
-            Timer fileSizeCheckTimer = new Timer(1000);
+            Timer fileSizeCheckTimer = new Timer(5000);
             fileSizeCheckTimer.Elapsed += new ElapsedEventHandler((o1, e1) =>
             {
                 elapsedTime++;
