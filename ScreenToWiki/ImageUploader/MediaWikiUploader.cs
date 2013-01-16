@@ -154,7 +154,7 @@ namespace ScreenToWiki.ImageUploader
 
             if (result != "Success")
             {
-                throw new UploadFailedException(String.Format("Uploading failed (result: {0})", result));
+                throw new UploadFailedException(String.Format("Uploading failed (result: {0}, raw: {1})", result, respUpload.RawText));
             }
 
             string descriptionUrl = respTree.upload.imageinfo.descriptionurl;
